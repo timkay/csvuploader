@@ -46,11 +46,12 @@ app.post('/api/v1/upload', (req, res) =>  {
             // The provider value is normalized: only lower case word characters are allowed
             // Then look up the columns for this provider.
             provider = provider.replace(/\W+/g, '').toLowerCase();
+            const {columns: selection} = settings.providers.default;
             const {name, columns} = settings.providers[provider] || settings.providers.default;
             const dbname = `data/${provider}.db`;
 
             db.serialize(function () {
-                db.run(`delete table if not exists ${name}`, [], () => {
+                db.run(`drop table if exists ${provider}`, [], () => {
 
                     const cmd1 = `create table ${provider} (${columns.map(col => `'${col}' text`).join(', ')})`;
                     db.run(cmd1, [], () => {
@@ -60,10 +61,10 @@ app.post('/api/v1/upload', (req, res) =>  {
                         const cmd2 = `insert into ${provider} values (${columns.map(() => '?').join(', ')})`;
 
                         file
-                            .pipe(csv())
+                            .pipe(csv(columns))
                             .on('data', async data => {
                                 n += 1;
-                                const values = columns.map(item => data[item] || '');
+                                const values = selection.map(item => data[item] || '');
                                 db.run(cmd2, values);
                             })
                             .on('end', () => {
