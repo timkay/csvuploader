@@ -1,0 +1,25 @@
+# This settings file defines the columns schema for each
+# provider. The format is obvious.
+#
+# If a provider is not listed, then the default schema is
+# used.
+
+providers:
+  default:
+    name: Default Schema
+    columns:
+    - UUID
+    - VIN (alphanumerical vehicle id)
+    - Make
+    - Model
+    - Mileage
+    - Year
+    - Price
+    - Zip Code
+    - Create Date
+    - Update Date
+  timkay:
+    name: Tim Kay's Schema
+    columns:
+    - a
+    - b
