@@ -18,7 +18,7 @@ if (false) {
     dbfile = 'data/sqlite.db';
 }
 
-const db = new sqlite3.Database('data/sqlite.db');
+const db = new sqlite3.Database(dbfile);
 
 const app = express();
 const port = process.env.PORT || 3000;
