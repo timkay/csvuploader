@@ -12,7 +12,7 @@ const settings = yaml.parse(fs.readFileSync('settings.yaml', 'utf8'));
 let dbfile = ':memory:';
 
 // Persists the data to the filesystem for debugging.
-if (false) {
+if (!process.env.RENDER) {
     // make sure the data subdirectory exists
     try {fs.mkdirSync('data')} catch (e) {};
     dbfile = 'data/sqlite.db';
@@ -80,7 +80,7 @@ app.post('/api/v1/upload', (req, res) =>  {
 });
 
 app.get('/api/v1/dump',  (req, res) => {
-    const provider = req.query.provider || 'default';
+    const provider = (req.query.provider || 'default').replace(/\W+/g, '').toLowerCase();
     const {name, columns} = settings.providers.default;
     db.all(`select * from ${provider}`, (error, rows) => {
         if (error) console.log('error', error);
