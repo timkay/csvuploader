@@ -1,0 +1,22 @@
+{
+  "name": "csvuploader",
+  "version": "1.0.0",
+  "description": "Upload a CSV file to an in-memory database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timkay/csvuploader.git"
+  },
+  "author": "timkay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timkay/csvuploader/issues"
+  },
+  "homepage": "https://github.com/timkay/csvuploader#readme",
+  "dependencies": {
+    "csv-parser": "^3.0.0"
+  }
+}
