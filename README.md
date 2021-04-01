@@ -41,4 +41,8 @@ To dump the uploaded data: https://csvuploader.timkay.com/dump.html
 
 A lot of work needs to be done to productize the code, such as checking that the specified provider exists. Of course, a more likely scenario is that a user would sign in, and their provider would automatically be specified, so the error handling would be different.
 
+### Testing
 
+Two files, sample1.csv and sample2.csv have been provided. sample1.csv contains column headers. Because the first row isn't treated as headers, that row ends up as a first row of data. It's useful to show that the configuration file works. If you upload as anything but provider=timkay, the columns align. The provider=timkay configuration swaps the first two columns.
+
+Haven't tested the streaming. To do that, would need to create a very large CSV file. Could set a vlimit memory limit for the server process that is smaller than the file. If it works, must be streaming.
