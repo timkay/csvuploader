@@ -33,7 +33,9 @@ The API is a single endpoint with a single method: /api/v1/upload. A POST reques
 
 For debugging, an addtional API method provides a dump of the rows for a given provider: /api/v1/dump. See public/dump.html for a usage example.
 
-The code is running at
+The code is running at https://csvuploader.timkay.com/
+
+To dump the uploaded data: https://csvuploader.timkay.com/dump.html
 
 ### To Do
 
