@@ -12,7 +12,7 @@ const settings = yaml.parse(fs.readFileSync('settings.yaml', 'utf8'));
 let dbfile = ':memory:';
 
 // Persists the data to the filesystem for debugging.
-if (true) {
+if (false) {
     // make sure the data subdirectory exists
     try {fs.mkdirSync('data')} catch (e) {};
     dbfile = 'data/sqlite.db';
