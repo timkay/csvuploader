@@ -5,10 +5,13 @@ const express = require('express');
 const busboy = require('connect-busboy');
 const csv = require('csv-parser');
 const sqlite3 = require('sqlite3');
-const {open} = require('sqlite');
 
 const settings = yaml.parse(fs.readFileSync('settings.yaml', 'utf8'));
 // sanity check settings: make sure column names do not contain apostrophe
+
+// make sure the data subdirectory exists
+try {fs.mkdirSync('data')} catch (e) {};
+const db = new sqlite3.Database('data/sqlite.db');
 
 const app = express();
 const port = 3000;
@@ -41,33 +44,36 @@ app.post('/api/v1/upload', (req, res) =>  {
             const {name, columns} = settings.providers[provider] || settings.providers.default;
             const dbname = `data/${provider}.db`;
 
-            // make sure the data subdirectory exists
-            try {await fs.promises.mkdir('data')} catch (e) {console.log(e)};
-            try {await fs.promises.unlink(dbname)} catch (e) {};
-            const db = await open({filename: dbname, driver: sqlite3.Database});
+            db.serialize(function () {
+                db.run(`delete table if not exists ${name}`, [], () => {
+                    console.log('done with delete');
 
-            const cmd1 = `create table data (${columns.map(col => `'${col}' text`).join(', ')})`;
-            console.log(cmd1);
-            await db.exec(cmd1);
+                    const cmd1 = `create table ${provider} (${columns.map(col => `'${col}' text`).join(', ')})`;
+                    console.log(cmd1);
+                    db.run(cmd1, [], () => {
+                        console.log('done with create');
 
-            // The insert command happens a lot, but it's always the same, so we build it here.
-            // The values for each row will be inserted using placeholders.
-            const cmd2 = `insert into data values (${columns.map(col => '?').join(', ')})`;
+                        // The insert command happens a lot, but it's always the same, so we build it here.
+                        // The values for each row will be inserted using placeholders.
+                        const cmd2 = `insert into ${provider} values (${columns.map(() => '?').join(', ')})`;
 
-            console.log(cmd2);
+                        console.log(cmd2);
 
-            file
-            .pipe(csv())
-            .on('data', async data => {
-                n += 1;
-                //console.log('data', data);
-                const values = columns.map(item => data[item] || '');
-                console.log(values);
-                await db.exec(cmd2, values);
-            })
-            .on('end', () => {
-                console.log('end');
-                res.end(`Uploaded ${n} lines for provider ${provider}=${name}`);
+                        file
+                            .pipe(csv())
+                            .on('data', async data => {
+                                n += 1;
+                                //console.log('data', data);
+                                const values = columns.map(item => data[item] || '');
+                                console.log('values', values);
+                                db.run(cmd2, values, () => console.log('done with insert'));
+                            })
+                            .on('end', () => {
+                                console.log('end');
+                                res.end(`Uploaded ${n} lines for provider ${provider}=${name}`);
+                            });
+                    });
+                });
             });
 
         })();
