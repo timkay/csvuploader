@@ -2,7 +2,7 @@
 # provider. The format is obvious.
 #
 # If a provider is not listed, then the default schema is
-# used.
+# assumed.
 
 providers:
   default:
@@ -21,5 +21,14 @@ providers:
   timkay:
     name: Tim Kay's Schema
     columns:
-    - a
-    - b
+    # note: it's the same as default, with the first two columns reversed
+    - VIN (alphanumerical vehicle id)
+    - UUID
+    - Make
+    - Model
+    - Mileage
+    - Year
+    - Price
+    - Zip Code
+    - Create Date
+    - Update Date
