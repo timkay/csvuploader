@@ -11,6 +11,11 @@ const settings = yaml.parse(fs.readFileSync('settings.yaml', 'utf8'));
 
 // make sure the data subdirectory exists
 try {fs.mkdirSync('data')} catch (e) {};
+
+let dbfile = ':memory:';
+// If you want the database in memory as per the requirements, comment out
+// this next line.
+dbfile = 'data/sqlite.db';
 const db = new sqlite3.Database('data/sqlite.db');
 
 const app = express();
@@ -46,30 +51,22 @@ app.post('/api/v1/upload', (req, res) =>  {
 
             db.serialize(function () {
                 db.run(`delete table if not exists ${name}`, [], () => {
-                    console.log('done with delete');
 
                     const cmd1 = `create table ${provider} (${columns.map(col => `'${col}' text`).join(', ')})`;
-                    console.log(cmd1);
                     db.run(cmd1, [], () => {
-                        console.log('done with create');
 
                         // The insert command happens a lot, but it's always the same, so we build it here.
                         // The values for each row will be inserted using placeholders.
                         const cmd2 = `insert into ${provider} values (${columns.map(() => '?').join(', ')})`;
 
-                        console.log(cmd2);
-
                         file
                             .pipe(csv())
                             .on('data', async data => {
                                 n += 1;
-                                //console.log('data', data);
                                 const values = columns.map(item => data[item] || '');
-                                console.log('values', values);
-                                db.run(cmd2, values, () => console.log('done with insert'));
+                                db.run(cmd2, values);
                             })
                             .on('end', () => {
-                                console.log('end');
                                 res.end(`Uploaded ${n} lines for provider ${provider}=${name}`);
                             });
                     });
