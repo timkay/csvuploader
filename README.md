@@ -21,7 +21,7 @@ The server is implemented in nodejs using the express framework. Additional pack
 
 The configuration file is named `settings.yaml` uses YAML format. (YAML is simple and easy to maintain.) The configuration file format is obvious, so no additional description is provided here.
 
-The configuration file contanis a provider named `default` which serves two purposes:
+The configuration file contains a provider named `default` which serves two purposes:
 
 1. specifies the columns (and their ordering) that are required, and
 2. will be used when the supplied provider field does not exist in the configuration file.
