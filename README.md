@@ -28,7 +28,7 @@ The configuration file contains a provider named `default` which serves two purp
 
 ### In-Memory Database
 
-The data is stored in sqlite3, chosen because it supports the ability to store a database either in-memory and persistent in the filesystem. For testing, the latter is used to store the database to the filesystem, so it can be viewed using the sqlite3 command line. The code automatically switches from in-memory to persistent when run in debug mode.
+The data is stored in sqlite3, chosen because it supports the ability to store a database either in-memory and persistent in the filesystem. For testing, the latter is used to store the database to the filesystem, so it can be viewed using the sqlite3 command line. The code automatically switches from in-memory to persistent when run in debug mode (currently determined by the existence of the `RENDER` environment variable).
 
 ### API
 
