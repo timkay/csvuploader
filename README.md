@@ -40,6 +40,12 @@ For debugging, an addtional API method provides a dump of the rows for a given p
 
 The code is running at https://csvuploader.timkay.com/
 
+Trivial sample files are available:
+
+https://csvuploader.timkay.com/sample0.csv
+https://csvuploader.timkay.com/sample1.csv
+https://csvuploader.timkay.com/sample2.csv
+
 To dump the uploaded data: https://csvuploader.timkay.com/dump.html
 
 ### To Do
