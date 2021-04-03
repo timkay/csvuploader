@@ -42,9 +42,9 @@ The code is running at https://csvuploader.timkay.com/
 
 Trivial sample files are available:
 
-https://csvuploader.timkay.com/sample0.csv
-https://csvuploader.timkay.com/sample1.csv
-https://csvuploader.timkay.com/sample2.csv
+* [sample0.csv](https://csvuploader.timkay.com/sample0.csv)
+* [sample1.csv](https://csvuploader.timkay.com/sample1.csv)
+* [sample2.csv](https://csvuploader.timkay.com/sample2.csv)
 
 To dump the uploaded data: https://csvuploader.timkay.com/dump.html
 
